@@ -1,5 +1,12 @@
 var express = require("express");
+var path = require("path");
 var app = express();
+
+//built in middlewere
+const staticpath = path.join(__dirname,"../public");
+console.log(staticpath);
+
+app.use(express.static(staticpath));
 
 app.get("/",(req,res)=>
 {
