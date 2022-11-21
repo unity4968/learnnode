@@ -1,4 +1,5 @@
 const express = require('express');
+const Student = require('../models/students');
 const app = express();
 const router = new express.Router();
 
@@ -21,7 +22,6 @@ router.get("/",(req,res)=>
 //     res.send("Hello From Other side");
 // })
 
-
 router.post("/students",async (req,res)=>
 {
     try
@@ -29,7 +29,7 @@ router.post("/students",async (req,res)=>
         const user = new Student(req.body); 
         const createuser = await user.save();
         res.status(201).send(createuser);}
-    catch(e){  res.status(400).send(e);}
+     catch(e){  res.status(400).send(e);}
 
 })
 router.get("/students",async (req,res)=>{
@@ -37,6 +37,7 @@ router.get("/students",async (req,res)=>{
     try {
         const res = await Student.find();
         res.send(res);
+        console.log(res);
     }
     catch(e){
         res.send(e);
@@ -61,26 +62,14 @@ router.get("/students/:id",async (req,res)=>{
         res.send(e);
     }
 })
-router.get("/find",(req,res)=>
-{
-    const Student = new Student(res);
-    console.log(Student);
-   //Student.find({}, (err, allBooks) => 
-   //{
-   //    if (err) console.error(err);
-   //    res.render(allBooks);
-   //    console.log(allBooks);
-   //})
-});
 
 // update the data into database
-
 router.patch("/students/:id",async (req,res)=>
-{
+{   
     try
     {
         const _id = req.params.id;
-    const updateStudents =    Student.findByIdAndUpdate(_id,res.body,{
+        const updateStudents = Student.findByIdAndUpdate(_id,res.body,{
         new:true
     });
     res.send(updateStudents);
@@ -89,6 +78,5 @@ router.patch("/students/:id",async (req,res)=>
         res.status(400).send(updateStudents);
     }
 }) 
-
 
 module.exports=router;
